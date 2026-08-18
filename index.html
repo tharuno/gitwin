@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee Management - 1 Tier</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:20px;background:#f4f7fb;color:#222}
+.card{background:white;padding:25px;border-radius:12px;box-shadow:0 4px 16px #0001}
+input,button{padding:10px;margin:5px;border-radius:6px;border:1px solid #ccc}
+button{background:#2563eb;color:white;border:0;cursor:pointer}
+table{width:100%;margin-top:20px;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Employee Management</h1>
+<p><b>1-Tier Application</b> — everything runs in the browser.</p>
+<form id="form">
+<input id="name" placeholder="Employee name" required>
+<input id="role" placeholder="Role" required>
+<button>Add Employee</button>
+</form>
+<table>
+<thead><tr><th>ID</th><th>Name</th><th>Role</th></tr></thead>
+<tbody id="list"></tbody>
+</table>
+</div>
+<script>
+let employees = JSON.parse(localStorage.getItem("employees") || "[]");
+function render() {
+ document.getElementById("list").innerHTML = employees.map((e,i) =>
+ `<tr><td>${i+1}</td><td>${e.name}</td><td>${e.role}</td></tr>`).join("");
+}
+document.getElementById("form").addEventListener("submit", e => {
+ e.preventDefault();
+ employees.push({
+   name: document.getElementById("name").value,
+   role: document.getElementById("role").value
+ });
+ localStorage.setItem("employees", JSON.stringify(employees));
+ e.target.reset();
+ render();
+});
+render();
+</script>
+</body>
+</html>
